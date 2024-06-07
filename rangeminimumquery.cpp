@@ -26,6 +26,22 @@ class sgt{
          // cout<<seg[ind]<<ind<<endl;
       }
 
+      void update(int ind,int start,int end,int idx,int val){
+
+          if(start==end){
+            seg[ind]=val;
+            return ;
+          }
+         int mid=(start+end)>>1;
+         if(mid>=idx){
+            update(2*ind+1,start,mid,idx,val);
+         }else{
+            update(2*ind+2,mid+1,end,idx,val);
+         }
+
+         seg[ind]=min(seg[2*ind+1],seg[2*ind+2]);
+      }
+
       int query(int ind,int start,int end,int l,int r){
 
               if(end<l||r<start){
@@ -52,10 +68,21 @@ for(int i=0;i<n;i++) cin>>arr[i];
   sg.build(0,0,n-1,arr);
 
   while(q--){
-    int l,r;
+    int type;
+    cin>>type;
+    if(type==1){
+         int idx,val;
+          cin>>idx>>val;
+          idx--;
+          sg.update(0,0,n-1,idx,val);
+          arr[idx]=val;
+    }else{
+        int l,r;
     cin>>l>>r;
     l--;r--;
     cout<<sg.query(0,0,n-1,l,r)<<endl;
+    }
+    
   }
 
 }
